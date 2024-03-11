@@ -77,7 +77,20 @@ const App: Component = () => {
           get_collisions: false,
           group_size: 1,
           page_size: 12,
-          tag_set: [curSex],
+          filters: {
+            must: [
+              {
+                field: "tag_set",
+                match: [curSex],
+              },
+            ],
+            must_not: [
+              {
+                field: "tag_set",
+                match: [curSex != "" ? (curSex === "m" ? "f" : "m") : ""],
+              },
+            ],
+          },
         }),
         signal: abortController.signal,
       },
@@ -109,6 +122,7 @@ const App: Component = () => {
       const curSearchQuery = searchQuery();
       if (!curSearchQuery) return;
 
+      sex();
       searchType();
       currentPage();
 
