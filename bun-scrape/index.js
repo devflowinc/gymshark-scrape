@@ -3,6 +3,9 @@ const API_KEY = Bun.env.API_KEY;
 const DATASET_ID = Bun.env.DATASET_ID;
 
 const createChunkGroup = async (name, description, tracking_id) => {
+  // console.log("CREATING CHUNK GROUP", name, description, tracking_id);
+  // return;
+
   const response = await fetch(`${API_URL}/chunk_group`, {
     method: "POST",
     headers: {
@@ -36,6 +39,9 @@ const createChunk = async (
   tracking_id,
   metadata
 ) => {
+  // console.log("CREATING CHUNK", chunk_html, group_tracking_ids, link, tag_set, tracking_id, metadata);
+  // return;
+
   const response = await fetch(`${API_URL}/chunk`, {
     method: "POST",
     headers: {
@@ -178,7 +184,7 @@ const getSingleProduct = async (handle) => {
 
   const _ = await createChunkGroup(title, "Gymshark product", sku);
 
-  const variants = productData.variants;
+  const variants = data.pageProps.productData.variants;
   for (let variant of variants) {
     const colour = variant.colour;
     const featuredMedia = variant.featuredMedia;
