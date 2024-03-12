@@ -50,7 +50,7 @@ const App: Component = () => {
   // eslint-disable-next-line solid/reactivity
   const [fetching, setFetching] = createSignal(true);
   const [searchType, setSearchType] = createSignal<SearchType>("hybrid");
-  const [starCount, setStarCount] = createSignal(512);
+  const [starCount, setStarCount] = createSignal(513);
   const [currentPage, setCurrentPage] = createSignal(1);
   const [sex, setSex] = createSignal("");
 
@@ -364,9 +364,9 @@ const App: Component = () => {
                         "https://cdn.iconscout.com/icon/free/png-256/free-404-error-1-529717.png?f=webp"
                       }
                     />
-                    {/* <span class="text-red absolute bottom-2 left-2 rounded-md p-1">
-                      {group.metadata[0].score.toFixed(2)}
-                    </span> */}
+                    <span class="text-red absolute bottom-2 left-2 rounded-md p-1">
+                      {group.metadata[0].score.toFixed(4)}
+                    </span>
                   </div>
                   <p class="mt-2 text-[14px]">
                     {group.metadata[0].metadata[0].metadata.title}
