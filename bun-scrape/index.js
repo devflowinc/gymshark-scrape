@@ -1,3 +1,10 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 const API_URL = Bun.env.API_URL;
 const API_KEY = Bun.env.API_KEY;
 const DATASET_ID = Bun.env.DATASET_ID;
@@ -37,9 +44,17 @@ const createChunk = async (
   link,
   tag_set,
   tracking_id,
-  metadata
+  metadata,
 ) => {
-  // console.log("CREATING CHUNK", chunk_html, group_tracking_ids, link, tag_set, tracking_id, metadata);
+  // console.log(
+  //   "CREATING CHUNK",
+  //   chunk_html,
+  //   group_tracking_ids,
+  //   link,
+  //   tag_set,
+  //   tracking_id,
+  //   metadata,
+  // );
   // return;
 
   const response = await fetch(`${API_URL}/chunk`, {
@@ -72,7 +87,7 @@ const createChunk = async (
   }
   console.log(
     "success queueing chunk to be created",
-    responseJson.chunk_metadata.id
+    responseJson.chunk_metadata.id,
   );
   const chunkId = responseJson.chunk_metadata.id;
 
@@ -103,7 +118,7 @@ const getAllProducts = async (page) => {
       method: "GET",
       mode: "cors",
       credentials: "include",
-    }
+    },
   );
 
   const data = await resp.json();
@@ -137,7 +152,7 @@ const getSingleProduct = async (handle) => {
       method: "GET",
       mode: "cors",
       credentials: "include",
-    }
+    },
   );
 
   const data = await resp.json();
@@ -159,8 +174,12 @@ const getSingleProduct = async (handle) => {
 
   let group_tag_set = collections;
   group_tag_set.push(...gender);
-  group_tag_set.push(type);
-  group_tag_set.push(fit);
+  if (type) {
+    group_tag_set.push(type);
+  }
+  if (fit) {
+    group_tag_set.push(fit);
+  }
 
   let group_metadata = {
     media: media,
@@ -182,7 +201,7 @@ const getSingleProduct = async (handle) => {
     return "";
   };
 
-  const _ = await createChunkGroup(title, "Gymshark product", sku);
+  await createChunkGroup(title, "Gymshark product", sku);
 
   const variants = data.pageProps.productData.variants;
   for (let variant of variants) {
@@ -205,13 +224,13 @@ const getSingleProduct = async (handle) => {
       objectID: objectID,
     };
 
-    const chunkId = await createChunk(
+    await createChunk(
       chunk_html,
       group_tracking_ids,
       link,
       chunk_tag_set,
       chunk_tracking_id,
-      chunk_metadata
+      chunk_metadata,
     );
   }
 };

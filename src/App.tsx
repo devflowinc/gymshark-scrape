@@ -50,7 +50,7 @@ const App: Component = () => {
   // eslint-disable-next-line solid/reactivity
   const [fetching, setFetching] = createSignal(true);
   const [searchType, setSearchType] = createSignal<SearchType>("hybrid");
-  const [starCount, setStarCount] = createSignal(511);
+  const [starCount, setStarCount] = createSignal(512);
   const [currentPage, setCurrentPage] = createSignal(1);
   const [sex, setSex] = createSignal("");
 
@@ -374,7 +374,7 @@ const App: Component = () => {
                   <p class="text-[14px] text-[#6E6E6E]">
                     {/* capitalize both words */}
                     <For
-                      each={group.metadata[0].metadata[0].metadata.fit.split(
+                      each={group.metadata[0].metadata[0].metadata.fit?.split(
                         " ",
                       )}
                     >
