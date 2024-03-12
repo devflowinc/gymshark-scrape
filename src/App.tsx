@@ -50,7 +50,7 @@ const App: Component = () => {
   // eslint-disable-next-line solid/reactivity
   const [fetching, setFetching] = createSignal(true);
   const [searchType, setSearchType] = createSignal<SearchType>("hybrid");
-  const [starCount, setStarCount] = createSignal(509);
+  const [starCount, setStarCount] = createSignal(511);
   const [currentPage, setCurrentPage] = createSignal(1);
   const [sex, setSex] = createSignal("");
 
@@ -77,20 +77,23 @@ const App: Component = () => {
           get_collisions: false,
           group_size: 1,
           page_size: 12,
-          filters: {
-            must: [
-              {
-                field: "tag_set",
-                match: [curSex],
-              },
-            ],
-            must_not: [
-              {
-                field: "tag_set",
-                match: [curSex != "" ? (curSex === "m" ? "f" : "m") : ""],
-              },
-            ],
-          },
+          filters:
+            curSex == ""
+              ? undefined
+              : {
+                  must: [
+                    {
+                      field: "tag_set",
+                      match: [curSex],
+                    },
+                  ],
+                  must_not: [
+                    {
+                      field: "tag_set",
+                      match: [curSex === "m" ? "f" : "m"],
+                    },
+                  ],
+                },
         }),
         signal: abortController.signal,
       },
