@@ -261,8 +261,8 @@ const App: Component = () => {
               }}
             >
               <option selected>All</option>
-              <option selected>Male</option>
-              <option selected>Female</option>
+              <option>Male</option>
+              <option>Female</option>
             </select>
           </div>
         </div>
