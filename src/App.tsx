@@ -257,11 +257,13 @@ const App: Component = () => {
               onChange={(e) =>
                 setSearchType(e.currentTarget.value.toLowerCase() as SearchType)
               }
-              value={searchType().toLowerCase()}
+              value={searchType()}
             >
-              <option selected>Hybrid</option>
-              <option>Semantic</option>
-              <option>Fulltext</option>
+              <option selected value="hybrid">
+                Hybrid
+              </option>
+              <option value="semantic">Semantic</option>
+              <option value="fulltext">Fulltext</option>
             </select>
           </div>
           <div class="flex items-center space-x-2 text-base">
