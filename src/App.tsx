@@ -257,6 +257,7 @@ const App: Component = () => {
               onChange={(e) =>
                 setSearchType(e.currentTarget.value.toLowerCase() as SearchType)
               }
+              value={searchType().toLowerCase()}
             >
               <option selected>Hybrid</option>
               <option>Semantic</option>
