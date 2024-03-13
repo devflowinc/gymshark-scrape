@@ -44,15 +44,20 @@ const App: Component = () => {
   const apiUrl = import.meta.env.VITE_API_URL as string;
   const datasetId = import.meta.env.VITE_DATASET_ID as string;
   const apiKey = import.meta.env.VITE_API_KEY as string;
+  const urlParams = new URLSearchParams(window.location.search);
 
-  const [searchQuery, setSearchQuery] = createSignal(defaultSearchQuery);
+  const [searchQuery, setSearchQuery] = createSignal(
+    urlParams.get("q") ?? defaultSearchQuery,
+  );
   const [resultGroups, setResultGroups] = createSignal<any>();
   // eslint-disable-next-line solid/reactivity
   const [fetching, setFetching] = createSignal(true);
-  const [searchType, setSearchType] = createSignal<SearchType>("hybrid");
+  const [searchType, setSearchType] = createSignal<SearchType>(
+    (urlParams.get("search_type") as SearchType) ?? "hybrid",
+  );
   const [starCount, setStarCount] = createSignal(513);
   const [currentPage, setCurrentPage] = createSignal(1);
-  const [sex, setSex] = createSignal("");
+  const [sex, setSex] = createSignal(urlParams.get("sex") ?? "");
 
   const searchCompanies = async (
     curSex: string,
@@ -125,9 +130,19 @@ const App: Component = () => {
       const curSearchQuery = searchQuery();
       if (!curSearchQuery) return;
 
-      sex();
-      searchType();
-      currentPage();
+      urlParams.set("q", curSearchQuery);
+      urlParams.set("search_type", searchType());
+      if (sex()) {
+        urlParams.set("sex", sex());
+      } else {
+        urlParams.delete("sex");
+      }
+
+      window.history.replaceState(
+        {},
+        "",
+        `${window.location.pathname}?${urlParams.toString()}`,
+      );
 
       clearTimeout(prevController?.timeout ?? 0);
       prevController?.abortController?.abort();
@@ -255,14 +270,15 @@ const App: Component = () => {
               name="gender"
               class="block w-fit min-w-[130px] rounded-md border border-neutral-300 bg-white px-3 py-2"
               onChange={(e) => {
-                const newSex = e.currentTarget.value.toLowerCase();
-                const newVal = newSex === "all" ? "" : newSex.charAt(0);
-                setSex(newVal);
+                setSex(e.target.value);
               }}
+              value={sex()}
             >
-              <option selected>All</option>
-              <option>Male</option>
-              <option>Female</option>
+              <option selected value="">
+                All
+              </option>
+              <option value="m">Male</option>
+              <option value="f">Female</option>
             </select>
           </div>
         </div>
